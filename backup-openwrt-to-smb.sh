@@ -1,6 +1,8 @@
 #!/bin/sh
-
+#
 # This will export the config off a OpenWRT device monthly onto an SMB share, on the first defined day of the week
+# It will require cifs, which is not installed by default.
+# This has been tested on OpenWRT v24.10 on a GL-Inet Flint 2
 #
 # Usage
 # Copy this script locally, edit the Config section below, and make it executable with:
@@ -13,7 +15,7 @@
 # Using the GUI [System] > [Scheduled Tasks] add this line (no indentation) to schedule it to run at 6AM each day:
 #     0 6 * * * /root/backup-openwrt-to-smb.sh
 #
-# There are further controls inside the script to exit early unless it's the 1st (i.e.) Friday of the month.
+# There are further controls inside the script to exit early unless it's the 1st Friday (configurable) of the month.
 
 # Config --- make it your own
 DAY_OF_WEEK_TO_RUN="Friday" # This will only run on the day of the week defined here. Must match 'date +%A' format (e.g. Monday, Friday, Sunday)
