@@ -5,16 +5,20 @@
 # This has been tested on OpenWRT v24.10 on a GL-Inet Flint 2
 #
 # Usage
-# Copy this script locally, edit the Config section below, and make it executable with:
-#    chmod +x /root/backup-openwrt-to-smb.sh
+# Download and make it executable:
+#    DL_TO=~/backup-openwrt-to-smb.sh
+#    URL=https://raw.githubusercontent.com/vargabp/MyHomelab/8c21a77598d409fe7a140c4d60edd127c2cabd48/backup-openwrt-to-smb.sh
+#    curl -o "$DL_TO" $URL && chmod +x "$DL_TO"
 #
-# On the OpenWRT device create a file containing credentials relevant to the SMB server, you may use this "one"-liner:
+# After downloading, edit the Config section in the file to match your environment.
+#
+# Create and secure a file containing credentials relevant to the SMB server, you may use this "one"-liner:
 #    f=~/.private/.smbhost.my.home && echo -e "username=nasuser\npassword=nasUserP@ss" > "$f" && chown $(id -u):$(id -g) "$f" && chmod 400 "$f"
 #      change this ^^^^^^^^^^^^^^^             and this ^^^^^^^  this too ^^^^^^^^^^^
 #
 # Using the GUI [System] > [Scheduled Tasks] add this line (no indentation) to schedule it to run at 6AM each day:
 #     0 6 * * * /root/backup-openwrt-to-smb.sh
-#
+#               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ this should point to the script 
 # There are further controls inside the script to exit early unless it's the 1st Friday (configurable) of the month.
 
 # Config --- make it your own
