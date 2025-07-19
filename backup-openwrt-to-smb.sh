@@ -111,17 +111,16 @@ fi
 # Create the backup
 if sysupgrade -b "$BACKUP_PATH"; then
     logger -t backup-to-smb "Backup successful: $BACKUP_NAME"
+    echo -e "${BACKUP_NAME}\tAutomatic monthly backup created by ${SCRIPT_PATH} at ${TIME}" >> "$JOURNAL_PATH"
 else
     logger -t backup-to-smb "Backup failed: sysupgrade command error"
+    echo -e "${BACKUP_NAME}\t[!] Automatic monthly backup likely failed: ${SCRIPT_PATH} at ${TIME}" >> "$JOURNAL_PATH"
     exit 1
 fi
 
-# Append to journal
-echo -e "${BACKUP_NAME}\tAutomatic monthly backup created by ${SCRIPT_PATH} at ${TIME}" >> "$JOURNAL_PATH"
-
 # Clean up
 
-# Retain only the 12 most recent -auto backups based on date in filename
+# Retain only a set number of most recent -auto backups based on date in filename, not file metadata (in case we copy them over, or modify elsewhere).
 if [ "$BACKUPS_TO_KEEP" -le 0 ]; then
     logger -t backup-to-smb "BACKUPS_TO_KEEP set to $BACKUPS_TO_KEEP; no tidying up required."
 else
