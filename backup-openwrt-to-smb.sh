@@ -2,7 +2,10 @@
 #
 # This will export the config off a OpenWRT device monthly onto an SMB share, on the first defined day of the week
 # It will require cifs, which is not installed by default.
-# This has been tested on OpenWRT v24.10 on a GL-Inet Flint 2
+#
+# Due to using e negative value with the head command in the retention tidying up procedure, this might only work on OpenWRT 21.02 and above.
+# This is due to busybox only adding support for negative values in head in version 1.31.0 (2019-09-14) https://git.busybox.net/busybox/commit/?id=1e0461f5d0d2
+# This has been tested on OpenWRT v24.10 on a GL-Inet Flint 2, and on v23 on a TP-Link Archer C7 v5
 #
 # Usage
 # Download and make it executable:
