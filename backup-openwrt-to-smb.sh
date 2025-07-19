@@ -33,15 +33,15 @@ PRIVATE_FILE="$HOME/.private/.${SMB_HOST}" # If the structure in the one-liner w
 CLEANUP_NEEDED=true
 cleanup() {
     if [ "$CLEANUP_NEEDED" = true ] && grep -qs "$MOUNT_POINT " /proc/mounts; then
-        if umount "$MOUNT_POINT"l then
+        if umount "$MOUNT_POINT"; then
             logger -t backup-to-smb "Unmounted $MOUNT_POINT"
-            if rmdir "$MOUNT_POINT"; then
-                logger -t backup-to-smb "Deleted $MOUNT_POINT"
+            if rm -rf "$MOUNT_POINT"; then
+                logger -t backup-to-smb "Force-removed $MOUNT_POINT"
             else
-                logger -t backup-to-smb "Failed to delete $MOUNT_POINT"
+                logger -t backup-to-smb "ERROR: Failed to force-remove $MOUNT_POINT"
             fi
         else
-            logger -t backup-to-smb "Failed to unmount $MOUNT_POINT"
+            logger -t backup-to-smb "ERROR: Failed to unmount $MOUNT_POINT; directory left untouched to avoid accidental deletion of remote files"
         fi
     fi
 }
