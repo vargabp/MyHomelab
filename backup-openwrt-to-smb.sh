@@ -26,11 +26,19 @@ PRIVATE_FILE="$HOME/.private/.${SMB_HOST}" # If the structure in the one-liner w
 # End of config
 
 # Define a cleanup routine for any exit conditions 
-CLEANUP_NEEDED=false # this will be set to true when needed further down in the script
+CLEANUP_NEEDED=true
 cleanup() {
     if [ "$CLEANUP_NEEDED" = true ] && grep -qs "$MOUNT_POINT " /proc/mounts; then
-        umount "$MOUNT_POINT"
-        logger -t backup-to-smb "Unmounted $MOUNT_POINT"
+        if umount "$MOUNT_POINT"l then
+            logger -t backup-to-smb "Unmounted $MOUNT_POINT"
+            if rmdir "$MOUNT_POINT"; then
+                logger -t backup-to-smb "Deleted $MOUNT_POINT"
+            else
+                logger -t backup-to-smb "Failed to delete $MOUNT_POINT"
+            fi
+        else
+            logger -t backup-to-smb "Failed to unmount $MOUNT_POINT"
+        fi
     fi
 }
 trap cleanup EXIT INT TERM HUP
@@ -83,10 +91,9 @@ if [ ! -d "$MOUNT_POINT" ]; then
 fi
 
 if mount -t cifs "//$SMB_HOST/$SMB_SHARE" "$MOUNT_POINT" -o "$MOUNT_OPTIONS"; then
-    CLEANUP_NEEDED=true
+    logger -t backup-to-smb "Mounted successfully: //$SMB_HOST/$SMB_SHARE > $MOUNT_POINT"    
 else
-    rmdir "$MOUNT_POINT"
-    logger -t backup-to-smb "Backup failed: could not mount //$SMB_HOST/$SMB_SHARE, cleaned up $MOUNT_POINT"
+    logger -t backup-to-smb "Backup failed: could not mount //$SMB_HOST/$SMB_SHARE"
     exit 1
 fi
 
