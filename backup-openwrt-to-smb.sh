@@ -7,7 +7,7 @@
 # Usage
 # Download and make it executable:
 #    DL_TO=~/backup-openwrt-to-smb.sh
-#    URL=https://raw.githubusercontent.com/vargabp/MyHomelab/8c21a77598d409fe7a140c4d60edd127c2cabd48/backup-openwrt-to-smb.sh
+#    URL=https://raw.githubusercontent.com/vargabp/MyHomelab/main/backup-openwrt-to-smb.sh
 #    curl -o "$DL_TO" $URL && chmod +x "$DL_TO"
 #
 # After downloading, edit the Config section in the file to match your environment.
