@@ -1,27 +1,20 @@
 #!/bin/sh
 #
-# This will export the config off a OpenWRT device monthly onto an SMB share, on the first defined day of the week
-# It will require cifs, which is not installed by default.
-#
-# Due to using e negative value with the head command in the retention tidying up procedure, this might only work on OpenWRT 21.02 and above.
-# This is due to busybox only adding support for negative values in head in version 1.31.0 (2019-09-14) https://git.busybox.net/busybox/commit/?id=1e0461f5d0d2
-# This has been tested on OpenWRT v24.10 on a GL-Inet Flint 2, and on v23 on a TP-Link Archer C7 v5
+# This will export the config off a TrueNAS Scale device monthly onto an SMB share, on the first defined day of the week
 #
 # Usage
-# Download and make it executable:
-#    DL_TO=~/backup-openwrt-to-smb.sh
-#    URL=https://raw.githubusercontent.com/vargabp/MyHomelab/main/backup-openwrt-to-smb.sh
-#    curl -o "$DL_TO" $URL && chmod +x "$DL_TO"
-#
-# After downloading, edit the Config section in the file to match your environment.
 #
 # Create and secure a file containing credentials relevant to the SMB server, you may use this "one"-liner:
 #    f=~/.private/.smbhost.my.home && echo -e "username=nasuser\npassword=nasUserP@ss" > "$f" && chown $(id -u):$(id -g) "$f" && chmod 400 "$f"
 #      change this ^^^^^^^^^^^^^^^             and this ^^^^^^^  this too ^^^^^^^^^^^
 #
-# Using the GUI [System] > [Scheduled Tasks] add this line (no indentation) to schedule it to run at 6AM each day:
-#     0 6 * * * /root/backup-openwrt-to-smb.sh
-#               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ this should point to the script
+# Download and make it executable:
+#    DL_TO=/etc/cron.daily/backup-truenas-to-smb.sh
+#    URL=https://raw.githubusercontent.com/vargabp/MyHomelab/main/backup-truenas-to-smb.sh
+#    curl -o "$DL_TO" $URL && chmod +x "$DL_TO"
+#
+# After downloading, edit the Config section in the file to match your environment.
+#
 # There are further controls inside the script to exit early unless it's the 1st Friday (configurable) of the month.
 
 # Config --- make it your own
@@ -113,10 +106,6 @@ if [ -f "$BACKUP_PATH" ]; then
 fi
 
 # Create the backup
-
-
-#if sysupgrade -b "$BACKUP_PATH"; then
-
 if TMPDIR=$(mktemp -d); then
     logger -t backup-to-smb "Created temporary directory: $TMPDIR"
 else
