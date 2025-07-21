@@ -58,6 +58,7 @@ for cmd in $REQUIRED_CMDS; do
         logger -t backup-to-smb "Requirement check failed: '$cmd' command not found"
         exit 1
     fi
+done
 # Check CIFS kernel module loaded
 if ! grep -q cifs /proc/filesystems; then
     logger -t backup-to-smb "Requirement check failed: CIFS kernel module not available"
