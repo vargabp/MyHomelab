@@ -9,7 +9,7 @@
 #      change this ^^^^^^^^^^^^^^^             and this ^^^^^^^  this too ^^^^^^^^^^^
 #
 # Download and make it executable:
-#    DL_TO=/etc/cron.daily/backup-truenas-to-smb.sh
+#    DL_TO=/etc/cron.daily/backup-truenas-to-smb
 #    URL=https://raw.githubusercontent.com/vargabp/MyHomelab/main/backup-truenas-to-smb.sh
 #    curl -o "$DL_TO" $URL && chmod +x "$DL_TO"
 #
